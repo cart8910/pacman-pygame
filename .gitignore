@@ -1,0 +1,49 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyInstaller (if you are converting your game to an .exe)
+*.manifest
+*.spec
+
+# Local environment files
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Pygame-specific or build artifacts
+config.py
+setup.py
+/prebuilt-x??
+/prebuilt_downloads
+
+# IDE-specific (e.g., VS Code or PyCharm)
+.vscode/
+.idea/
+
+# OS-specific
+.DS_Store
+Thumbs.db
