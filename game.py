@@ -7,6 +7,7 @@ import os
 #Local files
 from constants import *
 from pacman import Pacman
+from nodes import NodeGroup
 
 class MainGame(object):
     def __init__(self):
@@ -15,9 +16,10 @@ class MainGame(object):
         self.background = None
 
         #this ensures we load from the Assets folder even if the project is run from another working dir.
-        image_path = os.path.join(os.path.dirname(__file__), "Assets", "maze.bmp")
+        assets_path = os.path.join(os.path.dirname(__file__), "Assets")
 
-        self.bg_image = pygame.image.load(image_path)
+        #bg image
+        self.bg_image = pygame.image.load(os.path.join(assets_path, "maze.bmp"))
         self.bg_image = pygame.transform.scale(self.bg_image, SCREENSIZE)
 
         self.clock = pygame.time.Clock()
@@ -27,7 +29,10 @@ class MainGame(object):
 
     def startGame(self):
         self.setBackground()
-        self.pacman = Pacman()
+        self.nodes = NodeGroup()
+        self.nodes.setupTestNodes()
+
+        self.pacman = Pacman(self.nodes.nodeList[0])
 
     def update(self):
         delta = self.clock.tick(30) / 1000.0 #time since last frame in seconds
@@ -37,7 +42,6 @@ class MainGame(object):
         self.checkEvents()
         self.render()
 
-
     def checkEvents(self):
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -45,6 +49,8 @@ class MainGame(object):
 
     def render(self):
         self.screen.blit(self.background, (0, 0))
+        self.nodes.render(self.screen)
+
         self.pacman.render(self.screen)
         
         pygame.display.update()
