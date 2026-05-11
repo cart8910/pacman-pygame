@@ -8,7 +8,9 @@ import os
 from constants import *
 from pacman import Pacman
 from nodes import NodeGroup
+from pellets import PelletGroup
 
+#Main game object.
 class MainGame(object):
     def __init__(self):
         pygame.init()
@@ -35,11 +37,13 @@ class MainGame(object):
         self.nodes.setPortalPair((0,17), (27,17))
         
         self.pacman = Pacman(self.nodes.getStartTempNode())
+        self.pellets = PelletGroup(os.path.join(os.path.dirname(__file__), "maze1.txt"))
 
     def update(self):
         delta = self.clock.tick(30) / 1000.0 #time since last frame in seconds
         
         self.pacman.update(delta)
+        self.pellets.update(delta)
 
         self.checkEvents()
         self.render()
@@ -53,6 +57,7 @@ class MainGame(object):
         self.screen.blit(self.background, (0, 0))
         self.nodes.render(self.screen)
 
+        self.pellets.render(self.screen)
         self.pacman.render(self.screen)
         
         pygame.display.update()
