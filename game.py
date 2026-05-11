@@ -29,8 +29,11 @@ class MainGame(object):
 
     def startGame(self):
         self.setBackground()
-        self.nodes = NodeGroup(os.path.join(os.path.dirname(__file__), "mazetest.txt"))
-
+        self.nodes = NodeGroup(os.path.join(os.path.dirname(__file__), "maze1.txt"))
+        
+        #manually add portals
+        self.nodes.setPortalPair((0,17), (27,17))
+        
         self.pacman = Pacman(self.nodes.getStartTempNode())
 
     def update(self):
