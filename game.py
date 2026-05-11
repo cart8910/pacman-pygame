@@ -44,7 +44,7 @@ class MainGame(object):
         
         self.pacman.update(delta)
         self.pellets.update(delta)
-
+        self.checkPelletEvents()
         self.checkEvents()
         self.render()
 
@@ -52,6 +52,12 @@ class MainGame(object):
         for event in pygame.event.get():
             if event.type == QUIT:
                 exit()
+
+    def checkPelletEvents(self):
+        pellet = self.pacman.eatPellets(self.pellets.pelletList)
+        if pellet:
+            self.pellets.numEaten += 1
+            self.pellets.pelletList.remove(pellet)
 
     def render(self):
         self.screen.blit(self.background, (0, 0))

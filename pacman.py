@@ -17,6 +17,7 @@ class Pacman(object):
         self.node = node
         self.setPosition()
         self.target = node
+        self.collideRadius = 5
 
     def setPosition(self):
         self.position = self.node.position.copy()
@@ -44,6 +45,16 @@ class Pacman(object):
         else: 
             if self.validOppositeDirection(direction):
                 self.reverseDirection()
+
+    def eatPellets(self, pelletList):
+        #RA + RB > D, -> collision
+        for pellet in pelletList:
+            d = self.position - pellet.position
+            dSquared = d.magnitude_squared()
+            rSquared = (pellet.radius+self.collideRadius)**2
+            if dSquared <= rSquared:
+                return pellet
+        return None
 
     #inverts pacman's direction.    
     def reverseDirection(self):
