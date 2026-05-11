@@ -29,10 +29,9 @@ class MainGame(object):
 
     def startGame(self):
         self.setBackground()
-        self.nodes = NodeGroup()
-        self.nodes.setupTestNodes()
+        self.nodes = NodeGroup(os.path.join(os.path.dirname(__file__), "mazetest.txt"))
 
-        self.pacman = Pacman(self.nodes.nodeList[0])
+        self.pacman = Pacman(self.nodes.getStartTempNode())
 
     def update(self):
         delta = self.clock.tick(30) / 1000.0 #time since last frame in seconds
