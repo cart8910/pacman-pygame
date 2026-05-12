@@ -37,12 +37,21 @@ class Pacman(Entity):
     def eatPellets(self, pelletList):
         #RA + RB > D, -> collision
         for pellet in pelletList:
-            d = self.position - pellet.position
-            dSquared = d.magnitude_squared()
-            rSquared = (pellet.radius+self.collideRadius)**2
-            if dSquared <= rSquared:
+            if self.collideCheck(pellet):
                 return pellet
         return None
+
+    #checks collision of two circles by comparting radii.
+    def collideCheck(self, other):
+        d = self.position - other.position
+        dSquared = d.magnitude_squared()
+        rSquared = (other.radius+self.collideRadius)**2
+        if dSquared <= rSquared:
+            return True
+        return False
+    
+    def collideGhost(self, ghost):
+        return self.collideCheck(ghost)
 
     #convert input into a directions keyword.
     def getValidKey(self):

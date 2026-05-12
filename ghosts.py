@@ -38,3 +38,16 @@ class Ghost(Entity):
 
     def chase(self):
         self.goal = self.pacman.position
+
+    def spawn(self):
+        self.goal = self.spawnNode.position
+
+    def setSpawnNode(self, node):
+        self.spawnNode = node
+
+    def startSpawn(self):
+        self.mode.setSpawnMode()
+        if self.mode.current == SPAWN:
+            self.setSpeed(150)
+            self.directionMethod = self.goalDirection
+            self.spawn()

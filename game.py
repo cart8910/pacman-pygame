@@ -45,16 +45,23 @@ class MainGame(object):
         self.pacman = Pacman(self.nodes.getStartTempNode())
         self.pellets = PelletGroup(os.path.join(os.path.dirname(__file__), "maze1.txt"))
         self.ghost = Ghost(self.nodes.getStartTempNode(), self.pacman)
+        #this is hardcoded for now
+        self.ghost.setSpawnNode(self.nodes.getNodeFromTiles(2+11.5, 3+14))
 
     def update(self):
+        #update delta
         delta = self.clock.tick(30) / 1000.0 #time since last frame in seconds
         
+        #tick the game
         self.pacman.update(delta)
         self.ghost.update(delta)
         self.pellets.update(delta)
 
+        #check logic
         self.checkPelletEvents()
+        self.checkGhostEvents()
         self.checkEvents()
+        
         self.render()
 
     def checkEvents(self):
@@ -69,6 +76,11 @@ class MainGame(object):
             self.pellets.pelletList.remove(pellet)
             if pellet.name == POWERPELLET:
                self.ghost.startFright()
+
+    def checkGhostEvents(self):
+        if self.pacman.collideGhost(self.ghost):
+            if self.ghost.mode.current is FRIGHT:
+               self.ghost.startSpawn()
 
     def render(self):
         self.screen.blit(self.background, (0, 0))
