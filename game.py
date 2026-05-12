@@ -39,7 +39,8 @@ class MainGame(object):
         
         self.pacman = Pacman(self.nodes.getStartTempNode())
         self.pellets = PelletGroup(os.path.join(os.path.dirname(__file__), "maze1.txt"))
-        self.ghost = Ghost(self.nodes.getStartTempNode())
+        self.ghost = Ghost(self.nodes.getStartTempNode(), self.pacman)
+
     def update(self):
         delta = self.clock.tick(30) / 1000.0 #time since last frame in seconds
         
