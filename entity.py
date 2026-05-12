@@ -18,6 +18,8 @@ class Entity(object):
         self.target = node
         self.visible = True
         self.disablePortal = False
+        self.goal = None
+        self.directionMethod = self.randomDirection
 
     def setPosition(self):
         self.position = self.node.position.copy()
@@ -42,6 +44,14 @@ class Entity(object):
     
     def randomDirection(self, directions):
         return directions[randint(0, len(directions)-1)]
+    
+    def goalDirection(self, directions):
+        distances = []
+        for direction in directions:
+            vec = self.node.position  + self.directions[direction]*TILEWIDTH - self.goal
+            distances.append(vec.magnitude_squared())
+        index = distances.index(min(distances))
+        return directions[index]
     
     def getNewTarget(self, direction):
         if self.validDirection(direction):
@@ -78,7 +88,7 @@ class Entity(object):
         if self.overshotTarget():
             self.node = self.target
             directions = self.validDirections()
-            direction = self.randomDirection(directions)   
+            direction = self.directionMethod(directions)  
             if not self.disablePortal:
                 if self.node.neighbors[PORTAL] is not None:
                     self.node = self.node.neighbors[PORTAL]
