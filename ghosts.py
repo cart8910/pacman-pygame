@@ -23,6 +23,16 @@ class Ghost(Entity):
             self.chase()
         Entity.update(self, delta)
 
+    def startFright(self):
+        self.mode.setFrightMode()
+        if self.mode.current == FRIGHT:
+            self.setSpeed(50)
+            self.directionMethod = self.randomDirection         
+
+    def normalMode(self):
+        self.setSpeed(100)
+        self.directionMethod = self.goalDirection
+
     def scatter(self):
         self.goal = Vector2()
 

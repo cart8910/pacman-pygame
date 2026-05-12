@@ -36,4 +36,19 @@ class ModeController(object):
 
     def update(self, delta):
         self.mainmode.update(delta)
-        self.current = self.mainmode.mode
+        if self.current is FRIGHT:
+            self.timer += delta
+            if self.timer >= self.time:
+                self.time = None
+                self.entity.normalMode()
+                self.current = self.mainmode.mode
+        else:
+            self.current = self.mainmode.mode
+
+    def setFrightMode(self):
+        if self.current in [SCATTER, CHASE]:
+            self.timer = 0
+            self.time = 7
+            self.current = FRIGHT
+        elif self.current is FRIGHT: #If a ghost is already frightened, it won't go back again
+            self.timer = 0
