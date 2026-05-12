@@ -46,9 +46,7 @@ class ModeController(object):
             self.current = self.mainmode.mode
 
         if self.current is SPAWN:
-            print("1")
             if self.entity.node == self.entity.spawnNode:
-                print("2")
                 self.entity.normalMode()
                 self.current = self.mainmode.mode
                 self.mainmode.mode = SCATTER
