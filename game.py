@@ -10,6 +10,7 @@ from pacman import Pacman
 from nodes import NodeGroup
 from pellets import PelletGroup
 from ghosts import GhostGroup
+from pause import Pause
 
 #Main game object.
 class MainGame(object):
@@ -26,6 +27,8 @@ class MainGame(object):
         self.bg_image = pygame.transform.scale(self.bg_image, SCREENSIZE)
 
         self.clock = pygame.time.Clock()
+
+        self.pause = Pause(True)
 
     def setBackground(self):
         self.background = self.bg_image
@@ -57,15 +60,21 @@ class MainGame(object):
     def update(self):
         #update delta
         delta = self.clock.tick(30) / 1000.0 #time since last frame in seconds
-        
-        #tick the game
-        self.pacman.update(delta)
-        self.ghosts.update(delta)
         self.pellets.update(delta)
 
-        #check logic
-        self.checkPelletEvents()
-        self.checkGhostEvents()
+        if not self.pause.paused:
+            #tick the game
+            self.pacman.update(delta)
+            self.ghosts.update(delta)
+
+            #check logic
+            self.checkPelletEvents()
+            self.checkGhostEvents()
+        
+        afterPauseMethod = self.pause.update(delta)
+        if afterPauseMethod is not None:
+            afterPauseMethod()
+
         self.checkEvents()
         
         self.render()
@@ -74,6 +83,14 @@ class MainGame(object):
         for event in pygame.event.get():
             if event.type == QUIT:
                 exit()
+            elif event.type == KEYDOWN:
+                if event.key == K_SPACE:
+                    self.pause.setPause(playerPaused=True)
+                    if not self.pause.paused:
+                        self.showEntities()
+                    else:
+                        self.hideEntities()
+
 
     def checkPelletEvents(self):
         pellet = self.pacman.eatPellets(self.pellets.pelletList)
@@ -87,7 +104,18 @@ class MainGame(object):
         for ghost in self.ghosts:
             if self.pacman.collideGhost(ghost):
                 if ghost.mode.current is FRIGHT:
+                    self.pacman.visible = False
+                    ghost.visible = False
+                    self.pause.setPause(pauseTime=1, func=self.showEntities)
                     ghost.startSpawn()
+    
+    def showEntities(self):
+        self.pacman.visible = True
+        self.ghosts.show()
+
+    def hideEntities(self):
+        self.pacman.visible = False
+        self.ghosts.hide()
 
     def render(self):
         self.screen.blit(self.background, (0, 0))
