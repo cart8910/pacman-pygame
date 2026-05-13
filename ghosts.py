@@ -78,7 +78,8 @@ class Ghost(Entity):
         self.mode.setFrightMode()
         if self.mode.current == FRIGHT:
             self.setSpeed(50)
-            self.directionMethod = self.randomDirection         
+            self.directionMethod = self.randomDirection    
+            self.color = BLUE     
 
     def normalMode(self):
         self.setSpeed(100)
@@ -114,6 +115,12 @@ class Blinky(Ghost):
         self.name = BLINKY
         self.color = RED
 
+    def scatter(self):
+        self.color = RED
+
+    def chase(self):
+        self.color = RED
+
 class Pinky(Ghost):
     def __init__(self, node, pacman=None, blinky=None):
         Ghost.__init__(self, node, pacman, blinky)
@@ -122,8 +129,10 @@ class Pinky(Ghost):
 
     def scatter(self):
         self.goal = Vector2(TILEWIDTH*NCOLS, 0)
+        self.color = PINK
 
     def chase(self):
+        self.color = PINK
         self.goal = self.pacman.position + self.pacman.directions[self.pacman.direction] * TILEWIDTH * 4 #This targets 4 tiles ahead of pacman.
 
 class Inky(Ghost):
@@ -134,8 +143,10 @@ class Inky(Ghost):
 
     def scatter(self):
         self.goal = Vector2(TILEWIDTH*NCOLS, TILEHEIGHT*NROWS)
+        self.color = TEAL
 
     def chase(self):
+        self.color = TEAL
         vec1 = self.pacman.position + self.pacman.directions[self.pacman.direction] * TILEWIDTH * 2
         vec2 = (vec1 - self.blinky.position) * 2
         self.goal = self.blinky.position + vec2
@@ -148,8 +159,10 @@ class Clyde(Ghost):
 
     def scatter(self):
         self.goal = Vector2(0, TILEHEIGHT*NROWS)
+        self.color = ORANGE
 
     def chase(self):
+        self.color = ORANGE
         d = self.pacman.position - self.position
         ds = d.magnitude_squared()
         if ds <= (TILEWIDTH * 8)**2:

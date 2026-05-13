@@ -15,6 +15,7 @@ RED = (255, 0, 0)
 PINK = (255,100,150)
 TEAL = (100,255,255)
 ORANGE = (230,190,40)
+BLUE = (0,0,255)
 
 #control keywords
 STOP = 0

@@ -50,7 +50,7 @@ class ModeController(object):
                 self.entity.normalMode()
                 self.current = self.mainmode.mode
                 self.mainmode.mode = SCATTER
-
+                
     def setSpawnMode(self):
         if self.current is FRIGHT:
            self.current = SPAWN
