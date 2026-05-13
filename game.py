@@ -28,6 +28,7 @@ class MainGame(object):
 
         self.clock = pygame.time.Clock()
 
+        self.level = 0
         self.pause = Pause(True)
 
     def setBackground(self):
@@ -56,6 +57,13 @@ class MainGame(object):
 
         #this is hardcoded for now
         self.ghosts.setSpawnNode(self.nodes.getNodeFromTiles(2+11.5, 3+14))
+
+    def nextLevel(self):
+        self.showEntities()
+        self.level += 1
+        self.pause.paused = True
+        self.startGame()
+
 
     def update(self):
         #update delta
@@ -99,6 +107,10 @@ class MainGame(object):
             self.pellets.pelletList.remove(pellet)
             if pellet.name == POWERPELLET:
                self.ghosts.startFright()
+            
+            if self.pellets.isEmpty():
+                self.hideEntities()
+                self.pause.setPause(pauseTime=3, func=self.nextLevel)
 
     def checkGhostEvents(self):
         for ghost in self.ghosts:
