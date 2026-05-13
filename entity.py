@@ -117,3 +117,9 @@ class Entity(object):
         if self.visible:
             p = self.position
             pygame.draw.circle(screen, self.color, p, self.radius)
+
+    def reset(self):
+        self.setStartNode(self.startNode)
+        self.direction = STOP
+        self.speed = 100
+        self.visible = True

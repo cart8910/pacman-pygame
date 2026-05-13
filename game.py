@@ -29,10 +29,25 @@ class MainGame(object):
         self.clock = pygame.time.Clock()
 
         self.level = 0
+        self.lives = 5
+        
         self.pause = Pause(True)
 
     def setBackground(self):
         self.background = self.bg_image
+
+    #reset game state
+    def restartGame(self):
+        self.lives = 5
+        self.level = 0
+        self.pause.paused = True
+        self.startGame()
+
+    def resetLevel(self):
+        self.pause.paused = True
+        self.pacman.reset()
+        self.ghosts.reset()
+
 
     def startGame(self):
         self.setBackground()
@@ -93,11 +108,12 @@ class MainGame(object):
                 exit()
             elif event.type == KEYDOWN:
                 if event.key == K_SPACE:
-                    self.pause.setPause(playerPaused=True)
-                    if not self.pause.paused:
-                        self.showEntities()
-                    else:
-                        self.hideEntities()
+                    if self.pacman.alive: #Don't pause the game while pacman is dying
+                        self.pause.setPause(playerPaused=True)
+                        if not self.pause.paused:
+                            self.showEntities()
+                        else:
+                            self.hideEntities()
 
 
     def checkPelletEvents(self):
@@ -120,6 +136,16 @@ class MainGame(object):
                     ghost.visible = False
                     self.pause.setPause(pauseTime=1, func=self.showEntities)
                     ghost.startSpawn()
+
+                elif ghost.mode.current is not SPAWN:
+                     if self.pacman.alive:
+                         self.lives -=  1
+                         self.pacman.die()
+                         self.ghosts.hide()
+                         if self.lives <= 0:
+                             self.pause.setPause(pauseTime=3, func=self.restartGame)
+                         else:
+                             self.pause.setPause(pauseTime=3, func=self.resetLevel)
     
     def showEntities(self):
         self.pacman.visible = True

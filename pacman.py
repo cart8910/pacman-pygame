@@ -12,6 +12,14 @@ class Pacman(Entity):
         self.direction = LEFT
         self.setBetweenNodes(LEFT)
 
+        self.alive = True
+
+    def reset(self):
+        Entity.reset(self)
+        self.direction = LEFT
+        self.setBetweenNodes(LEFT)
+        self.alive = True
+
     def update(self, delta):	
         #update position
         self.position += self.directions[self.direction]*self.speed*delta
@@ -67,3 +75,7 @@ class Pacman(Entity):
         if key_pressed[K_RIGHT]:
             return RIGHT
         return STOP
+    
+    def die(self):
+        self.alive = False
+        self.direction = STOP
