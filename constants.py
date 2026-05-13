@@ -12,6 +12,9 @@ BLACK = (0, 0, 0)
 YELLOW = (255, 255, 0)
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
+PINK = (255,100,150)
+TEAL = (100,255,255)
+ORANGE = (230,190,40)
 
 #control keywords
 STOP = 0
@@ -27,7 +30,14 @@ PACMAN = 0
 PELLET = 1
 POWERPELLET = 2
 
+#Ghosts
 GHOST = 3
+
+BLINKY = 4
+PINKY = 5
+INKY = 6
+CLYDE = 7
+
 
 #Modes
 SCATTER = 0

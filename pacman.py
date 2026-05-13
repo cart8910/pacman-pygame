@@ -9,6 +9,8 @@ class Pacman(Entity):
         Entity.__init__(self, node)
         self.name = PACMAN
         self.color = YELLOW
+        self.direction = LEFT
+        self.setBetweenNodes(LEFT)
 
     def update(self, delta):	
         #update position
